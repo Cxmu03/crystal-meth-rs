@@ -3,6 +3,7 @@ use std::cmp::{Ordering, Reverse};
 use crate::position::Position;
 use crate::cell_group::CellGroup;
 
+#[derive(Clone)]
 pub struct Cell<'a> {
     pub time: f64,
     pub position: Position,

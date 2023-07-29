@@ -40,15 +40,18 @@ fn main() {
             group: &cell_group
         };
 
-        occupied_cells.insert(position_for_new_cell, new_cell);
-
+        occupied_cells.insert(position_for_new_cell, new_cell.clone());
+        remaining_cells.push(new_cell);
     }
-    
+
     for cell in occupied_cells.values() {
         image.put_pixel(cell.position.x, 
                         cell.position.y, 
                         cell.group.color);
     }
+
+    occupied_cells.clear();
+
 
     image.save("test.png").unwrap();
 }
