@@ -19,32 +19,35 @@ fn main() {
 
     let mut remaining_cells: BinaryHeap<Cell> = BinaryHeap::new();
     let mut occupied_cells: HashMap<Position, Cell> = HashMap::new();
-    let mut cell_groups: HashMap<u32, CellGroup> = HashMap::new();
+    let mut cell_groups: Vec<CellGroup> = Vec::new();
 
-    for i in 0..NUMBER_OF_STARTING_CELLS {
+    for _ in 0..NUMBER_OF_STARTING_CELLS {
+        let cell_group = CellGroup::random();
+
+        cell_groups.push(cell_group);
+    }
+
+    for cell_group in cell_groups.iter() {
         let mut position_for_new_cell = Position::random(WIDTH, HEIGHT);
 
         while occupied_cells.contains_key(&position_for_new_cell) {
             position_for_new_cell = Position::random(WIDTH, HEIGHT);
         }
 
-        let cell_group = CellGroup::random();
-
-        cell_groups.insert(i, cell_group);
-
         let new_cell = Cell {
             time: 0.0,
             position: position_for_new_cell,
-            cell_type: i
+            group: &cell_group
         };
 
         occupied_cells.insert(position_for_new_cell, new_cell);
+
     }
     
     for cell in occupied_cells.values() {
         image.put_pixel(cell.position.x, 
                         cell.position.y, 
-                        cell_groups.get(&cell.cell_type).unwrap().color);
+                        cell.group.color);
     }
 
     image.save("test.png").unwrap();
